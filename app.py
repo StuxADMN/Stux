@@ -65,6 +65,10 @@ class database():
 app = Flask(__name__)
 
 
+@app.route("/debug/<html>")
+def debug(html):
+    return render_template(html)
+
 
 @app.route("/")
 def feed():
@@ -80,7 +84,7 @@ def search(term):
 def watch(id):
     video = db.get_video(id)
     
-        
+
     
     return render_template("watch", video=video)
 

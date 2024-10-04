@@ -2,5 +2,5 @@
 A local web server, to "cache" content, if you are a victim of slow internet or just want your local library.
 
 ```bash
-apt update me
+install.sh
 ```

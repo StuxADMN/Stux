@@ -4,7 +4,7 @@ os.chdir(os.path.abspath(os.path.dirname(__name__)))
 from stuxbase import database
 
 app = Flask(__name__)
-
+app.secret_key = 'supersecretkey&RF/GDVB+Q"789630hnRT*Q()/RNF&W'
 
 @app.route("/debug/<html>")
 def debug(html):
@@ -31,14 +31,21 @@ def watch(id):
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
-        print(request.form)
-
+        user = db.check_user_password(username=request.form.get("username"), password=request.form.get("password"))
+        if user:
+            session["user_id"] = user["id"]
+            session["username"] = user["username"]
+            session["firstname"] = user["firstname"]
+            session["lastname"] = user["lastname"]
+            return redirect("/")
+        render_template("login.html", error="Invalid Credentials - Please Try Again")            
+                    
     return render_template("login.html")
 
 @app.route("/logout")
 def logout():
     if "user_id" in session:
-        session.pop()
+        session.clear()
 
 
 

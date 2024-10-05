@@ -9,10 +9,15 @@
 </head>
 <body>
     <header>
-        <img class="stux_logo" src="/static/img/stux.png" alt="Stux">
+        <img class="stux_logo" src="/static/img/stux_logo.png" alt="Stux">
         <a href="/logout" class="logout_button"></a>
     </header>
-
+    <main>
+        <video width="640" height="360" controls>
+            <source src="/stream-video/{{filename}}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </main>
 
 
 </body>

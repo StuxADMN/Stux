@@ -4,7 +4,7 @@ import sqlite3
 # database class, will maybe turn into a module
 class database():
     def __init__(self) -> None:
-        self.connection = sqlite3.connect('videos.db')
+        self.connection = sqlite3.connect('database.db')
         self.cursor = self.connection.cursor()
     
     def init_db(self,):

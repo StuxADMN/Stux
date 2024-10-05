@@ -2,7 +2,7 @@ from flask import Flask, redirect, render_template, request, session, Response, 
 import os
 os.chdir(os.path.abspath(os.path.dirname(__name__)))
 from stuxbase import database
-from youtube_mod import YouTubeDownloader
+#from youtube_mod import YouTubeDownloader
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey&RF/GDVB+Q"789630hnRT*Q()/RNF&W'
@@ -26,7 +26,7 @@ def watch(id):
     db = database()
     #video = db.get_video(id)
     video = " "
-    return render_template("watch.html", video=video, filename="meme.mp4")
+    return render_template("watch.html", video=video, filename="wohnmobil.mp4")
 
 def get_video_range(file_path, start, length):
     with open(file_path, 'rb') as video:
@@ -57,24 +57,7 @@ def video_stream(videofile):
     
     return response
 
-@app.route("/login", methods=["POST", "GET"])
-def login():
-    if request.method == "POST":
-        user = db.check_user_password(username=request.form.get("username"), password=request.form.get("password"))
-        if user:
-            session["user_id"] = user["id"]
-            session["username"] = user["username"]
-            session["firstname"] = user["firstname"]
-            session["lastname"] = user["lastname"]
-            return redirect("/")
-        render_template("login.html", error="Invalid Credentials - Please Try Again")            
-                    
-    return render_template("login.html")
 
-@app.route("/logout")
-def logout():
-    if "user_id" in session:
-        session.clear()
 
 
 

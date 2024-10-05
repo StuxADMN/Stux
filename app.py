@@ -1,10 +1,10 @@
-from flask import Flask, redirect, render_template
+from flask import Flask, redirect, render_template, request, session
 import sqlite3
 
 # database class, will maybe turn into a module
 class database():
     def __init__(self) -> None:
-        self.connection = sqlite3.connect('videos.db')
+        self.connection = sqlite3.connect('database.db')
         self.cursor = self.connection.cursor()
     
     def init_db(self,):
@@ -17,7 +17,15 @@ class database():
                 video_path TEXT NOT NULL,
                 author TEXT NOT NULL,
                 length INTEGER NOT NULL,
-                upload_date TEXT DEFAULT CURRENT_TIMESTAMP,
+                upload_date TEXT DEFAULT CURRENT_TIMESTAMP
+            );
+        ''')
+        self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                firstname TEXT NOT NULL,
+                lastname TEXT NOT NULL,
             );
         ''')
         self.connection.commit()
@@ -57,11 +65,24 @@ class database():
     
     def get_video(self, id):
         select_query = '''
-            SELECT * FROM videos WHERE id ?;
+            SELECT * FROM videos WHERE id = ?;
         '''
         self.cursor.execute(select_query, (id,))
         return self.cursor.fetchall()[0]
 
+    def insert_user(self, username, firstname, lastname):
+        insert_query = '''
+            INSERT INTO users (name, firstname, lastname) VALUES (?, ?, ?)
+        '''
+        self.cursor.execute(insert_query, (username, firstname, lastname))
+        self.connection.commit()
+        
+    def delete_user(self, id):
+        delete_query = '''
+            DELETE FROM users WHERE id = ?;
+        '''
+        
+    
 app = Flask(__name__)
 
 
@@ -83,19 +104,27 @@ def search(term):
 @app.route("/watch/<id>")
 def watch(id):
     video = db.get_video(id)
-    
-
-    
+        
     return render_template("watch", video=video)
 
 
+@app.route("/login", methos=["POST", "GET"])
+def login():
+    if request.method == "POST":
+        print(request.form)
+
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    if "user_id" in session:
+        session.pop()
 
 
 
-
-if __name__=="__main__".
+if __name__=="__main__":
     db = database()
     db.init_db()
     
     
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="0.0.0.0", port=80, debug=True)

@@ -2,7 +2,7 @@ from flask import Flask, redirect, render_template, request, session, Response, 
 import os
 os.chdir(os.path.abspath(os.path.dirname(__name__)))
 from stuxbase import database
-#from youtube_mod import YouTubeDownloader
+from youtube_mod import YouTubeDownloader
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey&RF/GDVB+Q"789630hnRT*Q()/RNF&W'
@@ -16,6 +16,14 @@ def feed():
     videos = db.get_videos()
     
     return render_template("feed.html", content=videos)
+
+@app.route("/add-video", methods=["POST", "GET"])
+def add_video():
+    if request.method == "POST":
+        url = request.form.get("url")
+    
+    return render_template("upload_video.html")
+
 
 @app.route("/search/<term>")
 def search(term):
@@ -57,13 +65,8 @@ def video_stream(videofile):
     
     return response
 
-
-
-
-
 if __name__=="__main__":
     db = database()
     db.init_db()
-    
-    
+
     app.run(host="0.0.0.0", port=80, debug=True)

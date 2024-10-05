@@ -1,3 +1,23 @@
 * {
-    background-color: black;
+    user-select: none;
 }
+
+body {
+    height: 100vh;
+    background-color: black;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    padding: 10px;
+    background-color: rgb(36, 36, 36);
+}
+
+.stux_logo {
+    padding: 0;
+    height: 50px;
+    margin: 0;
+}
+
+

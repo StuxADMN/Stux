@@ -3,6 +3,8 @@ import os
 os.chdir(os.path.abspath(os.path.dirname(__name__)))
 from stuxbase import database
 from youtube_mod import YouTubeDownloader
+import threading
+
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey&RF/GDVB+Q"789630hnRT*Q()/RNF&W'
@@ -17,13 +19,28 @@ def feed():
     
     return render_template("feed.html", content=videos)
 
+@app.route("/get-res", methods=["POST", "GET"])
+def get_res():
+    
+    return redirect("/add-video")
+
+def download_thread(url, resolution):
+    yt = YouTubeDownloader(url)
+    yt.download(quality=f"{resolution}p")
+
 @app.route("/add-video", methods=["POST", "GET"])
 def add_video():
     if request.method == "POST":
-        url = request.form.get("url")
+        if request.form.get("geturl") == "geturl":
+            yt = YouTubeDownloader(request.form.get("url"))
+            return render_template("add_video.html", video=yt.get_info(), get_url=False)
+        
+        url_to_download = request.form.get("url")
+        resolution_to_download = f"{request.form.get("resolution")}p"
+        download_thread = threading.Thread(target=download_thread, args=(url_to_download, resolution_to_download))
+        download_thread.start()
     
-    return render_template("upload_video.html")
-
+    return render_template("add_video.html", get_url=True)
 
 @app.route("/search/<term>")
 def search(term):

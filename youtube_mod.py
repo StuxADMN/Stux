@@ -6,7 +6,7 @@ class YouTubeDownloader:
         self.url = url
         self.yt = YouTube(url)
     
-    def get_resolutions(self,):
+    def get_info(self,):
         ys = self.yt.streams
         resolutions = []
         for stream in ys:
@@ -17,16 +17,23 @@ class YouTubeDownloader:
                     if int(res) not in resolutions:
                         resolutions.append(int(res))
             except Exception: pass
+            
+        return {
+            "title": self.yt.title,
+            "author": self.yt.author,
+            "desc": self.yt.description,
+            "length": self.yt.length,
+            "resolutions": sorted(resolutions, reverse=True),
+            "url": self.url
+        }
 
-        return sorted(resolutions, reverse=True)
-    
-    def download(self, quality='1080p'):
+    def download(self, quality='1080p'): 
         stream = None
         stream = self.yt.streams.filter(file_extension='mp4', res=quality).first()
 
         if stream:
             stream.download(output_path="static/content/")
-
+    
 
 if __name__=="__main__":
     from pytubefix import YouTube

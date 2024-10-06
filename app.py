@@ -5,6 +5,7 @@ from stuxbase import database
 from youtube_mod import YouTubeDownloader
 import threading
 
+downloads = []
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey&RF/GDVB+Q"789630hnRT*Q()/RNF&W'
@@ -27,6 +28,7 @@ def get_res():
 def download_thread(url, resolution):
     yt = YouTubeDownloader(url)
     yt.download(quality=f"{resolution}p")
+    
 
 @app.route("/add-video", methods=["POST", "GET"])
 def add_video():
@@ -39,6 +41,7 @@ def add_video():
         resolution_to_download = f"{request.form.get("resolution")}p"
         download_thread = threading.Thread(target=download_thread, args=(url_to_download, resolution_to_download))
         download_thread.start()
+        return render_template("downloading.html")
     
     return render_template("add_video.html", get_url=True)
 

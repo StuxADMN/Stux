@@ -1,10 +1,17 @@
 from pytubefix import YouTube
-from pytubefix.cli import on_progress
 
 class YouTubeDownloader:
     def __init__(self, url):
         self.url = url
-        self.yt = YouTube(url)
+        self.yt = YouTube(url, on_progress_callback=self.progress_callback)
+        self.progress = 0
+    
+    def progress_callback(self, stream, chunk, bytes_remaining):
+        total_size = stream.filesize
+        bytes_downloaded = total_size - bytes_remaining
+        percentage_of_completion = bytes_downloaded / total_size * 100
+        print(f"Downloaded: {percentage_of_completion:.2f}%")
+        self.progress = percentage_of_completion
     
     def get_info(self,):
         ys = self.yt.streams
@@ -34,27 +41,3 @@ class YouTubeDownloader:
         if stream:
             stream.download(output_path="static/content/")
     
-
-if __name__=="__main__":
-    from pytubefix import YouTube
-    from pytubefix.cli import on_progress
-    
-    url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    
-    yt = YouTube(url, on_progress_callback = on_progress)
-    
-    ys = yt.streams
-    
-    resolutions = []
-    for stream in ys:
-        try:
-            res = stream.resolution
-            if "p" in res:
-                res = res.replace("p", "")
-                if int(res) not in resolutions:
-                    resolutions.append(int(res))
-
-        except Exception as e: 
-            pass
-
-    print(sorted(resolutions, reverse=True))

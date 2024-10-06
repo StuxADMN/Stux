@@ -23,6 +23,14 @@ header {
     margin: 0;
 }
 
-h2 {
+h1 {
+    color: white;
+}
+
+h3 {
+    color: white;
+}
+
+pre {
     color: white;
 }

@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
 * {
+    font-family: 'Poppins', sans-serif;
     user-select: none;
 }
 
@@ -20,4 +23,6 @@ header {
     margin: 0;
 }
 
-
+h2 {
+    color: white;
+}

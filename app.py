@@ -17,22 +17,25 @@ def feed():
     
     return render_template("feed.html", content=videos)
 
-
 @app.route("/add-video", methods=["POST", "GET"])
 def add_video():
     if request.method == "POST":
         if request.form.get("geturl") == "geturl":
             yt = YouTubeDownloader(request.form.get("url"))
             return render_template("add_video.html", video=yt.get_info(), get_url=False)
-        def download_thread(url, resolution):
+    
+        def download_thread(url, resolution, filename):
             yt = YouTubeDownloader(url)
+            db = database()
+            db.add_video(title=yt.title, author=yt.author, length=yt.length, description=yt.desc, video_path=f"static/content/{filename}")
             download_instances.append(yt)
-            yt.download(quality=resolution)
+            yt.download(quality=resolution, filename=filename)
             download_instances.remove(yt)
-            
+
         url_to_download = request.form.get("url")
         resolution_to_download = f"{request.form.get("resolution")}p"
-        download_thread = threading.Thread(target=download_thread, args=(url_to_download, resolution_to_download))
+        filename = request.form.get("title") + ".mp4"
+        download_thread = threading.Thread(target=download_thread, args=(url_to_download, resolution_to_download, filename))
         download_thread.start()
         return redirect("/downloads")
     

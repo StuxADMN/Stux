@@ -5,7 +5,8 @@ from stuxbase import database
 from youtube_mod import YouTubeDownloader
 import threading
 
-downloads = []
+global download_instances
+download_instances = []
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey&RF/GDVB+Q"789630hnRT*Q()/RNF&W'
@@ -25,10 +26,7 @@ def get_res():
     
     return redirect("/add-video")
 
-def download_thread(url, resolution):
-    yt = YouTubeDownloader(url)
-    yt.download(quality=f"{resolution}p")
-    
+
 
 @app.route("/add-video", methods=["POST", "GET"])
 def add_video():
@@ -36,18 +34,37 @@ def add_video():
         if request.form.get("geturl") == "geturl":
             yt = YouTubeDownloader(request.form.get("url"))
             return render_template("add_video.html", video=yt.get_info(), get_url=False)
-        
+        def download_thread(url, resolution):
+            yt = YouTubeDownloader(url)
+            download_instances.append(yt)
+            yt.download(quality=resolution)
+            download_instances.remove(yt)
+            
         url_to_download = request.form.get("url")
         resolution_to_download = f"{request.form.get("resolution")}p"
         download_thread = threading.Thread(target=download_thread, args=(url_to_download, resolution_to_download))
         download_thread.start()
-        return render_template("downloading.html")
+        return redirect("/downloads")
     
     return render_template("add_video.html", get_url=True)
 
 @app.route("/search/<term>")
 def search(term):
     videos = db.get_search(term)
+
+@app.route("/downloads", methods=["GET"])
+def downloads():
+    downloads_infos = []
+    for download in download_instances:
+        downloads_infos.append(
+            {
+                "title": download.title,
+                "author": download.author,
+                "progress": round(download.progress),
+                "url": download.url
+            }
+        )
+    return render_template("downloading.html", downloads=downloads_infos)
 
 @app.route("/watch/<id>")
 def watch(id):

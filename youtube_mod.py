@@ -5,6 +5,8 @@ class YouTubeDownloader:
         self.url = url
         self.yt = YouTube(url, on_progress_callback=self.progress_callback)
         self.progress = 0
+        self.title = self.yt.title
+        self.author = self.yt.author
     
     def progress_callback(self, stream, chunk, bytes_remaining):
         total_size = stream.filesize
@@ -37,7 +39,6 @@ class YouTubeDownloader:
     def download(self, quality='1080p'): 
         stream = None
         stream = self.yt.streams.filter(file_extension='mp4', res=quality).first()
-
         if stream:
             stream.download(output_path="static/content/")
     

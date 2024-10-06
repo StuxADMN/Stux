@@ -7,5 +7,13 @@
 </head>
 <body>
     <h2>DOWNLOADING</h2>
+    {% for download in downloads %}
+    <div>
+        <p>{{download.title}}</p>
+        <p>{{download.author}}</p>
+        <p>{{download.progress}}%</p>
+        <p>{{download.url}}</p>
+    </div>
+    {% endfor %}
 </body>
 </html>

@@ -13,7 +13,6 @@ class database():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL,
                 description TEXT,
-                thumbnail_path TEXT,
                 video_path TEXT NOT NULL,
                 author TEXT NOT NULL,
                 length INTEGER NOT NULL,
@@ -22,12 +21,12 @@ class database():
         ''')
         self.connection.commit()
 
-    def add_video(self, title, description, thumbnail_path, video_path, author, length):
+    def add_video(self, title, description, video_path, author, length):
         insert_query = '''
-        INSERT INTO videos (title, description, thumbnail_path, video_path, author, length)
+        INSERT INTO videos (title, description, , video_path, author, length)
         VALUES (?, ?, ?, ?, ?, ?);
         '''
-        self.cursor.execute(insert_query, (title, description, thumbnail_path, video_path, author, length))
+        self.cursor.execute(insert_query, (title, description, video_path, author, length))
         self.connection.commit()
 
     def remove_video(self, id):

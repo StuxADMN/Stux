@@ -11,21 +11,11 @@ download_instances = []
 app = Flask(__name__)
 app.secret_key = 'supersecretkey&RF/GDVB+Q"789630hnRT*Q()/RNF&W'
 
-@app.route("/debug/<html>")
-def debug(html):
-    return render_template(html)
-
 @app.route("/")
 def feed():
     videos = db.get_videos()
     
     return render_template("feed.html", content=videos)
-
-@app.route("/get-res", methods=["POST", "GET"])
-def get_res():
-    
-    return redirect("/add-video")
-
 
 
 @app.route("/add-video", methods=["POST", "GET"])

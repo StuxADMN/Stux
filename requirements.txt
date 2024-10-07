@@ -1,2 +1,10 @@
+moviepy
+pytubefix
+Flask
+subprocess
+re
+os
+stuxbase
+youtube_mod
+threading
 sqlite3
-flask

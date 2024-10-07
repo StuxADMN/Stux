@@ -1,5 +1,6 @@
 from pytubefix import YouTube
 import re
+from moviepy.editor import VideoFileClip, AudioFileClip
 
 def clean_title_for_filename(title):
     cleaned_filename = re.sub(r'[^A-Za-z0-9_() ]', '', title)
@@ -47,8 +48,14 @@ class YouTubeDownloader:
         }
 
     def download(self, filename, quality='1080p'): 
-        stream = None
-        stream = self.yt.streams.filter(file_extension='mp4', res=quality).first()
-        if stream:
-            stream.download(output_path="static/content/", filename=filename)
-    
+        video_stream = None
+        audio_stream = None
+        video_stream = self.yt.streams.filter(file_extension='mp4', res=quality).first()
+        audio_stream = self.yt.streams.filter(only_audio=True).first()
+        if video_stream and audio_stream:
+            video_file = video_stream.download(output_path="static/cache/", filename=filename)
+            audio_file = audio_stream.download(output_path="static/cache/", filename=f"{filename}.mp3")
+            video_clip = VideoFileClip(video_file)
+            audio_clip = AudioFileClip(audio_file)
+            combined = video_clip.set_audio(audio_clip)
+            combined.write_videofile(f"static/content/{filename}")

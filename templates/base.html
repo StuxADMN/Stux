@@ -9,14 +9,19 @@
 </head>
 <body>
     <header>
-        <img class="stux_logo" src="/static/img/stux_logo.png" alt="Stux">
+        <a href="/"><img class="stux_logo" src="/static/img/stux_logo.png" alt="Stux"></a>
+        <div>
+            <a href="/add-video"><img class="site_icons" src="/static/img/add.png"></a>
+            <a href="/downloads"><img class="site_icons" src="/static/img/downloads.png"></a>
+            <a href="/settings"><img class="site_icons" src="/static/img/settings.png"></a>
+        </div>
+    
+    
     </header>
     <main>
         {% block content %}
 
         {% endblock %}
     </main>
-
-
 </body>
 </html>

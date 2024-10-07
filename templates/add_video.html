@@ -4,25 +4,25 @@
         {% if get_url %}
         <form action="/add-video" method="POST" class="add_youtube_form">
 
-            <input name="url" type="url" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+            <input required class="youtube_add_form_element" name="url" type="url" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
             <input type="hidden" name="geturl" value="geturl">
-            <input name="submit" type="submit">
+            <input id="submit_button" class="youtube_add_form_element" name="submit" type="submit">
         </form>
         {% else %}
         <form action="/add-video" method="POST" class="add_youtube_form">
             <h1>{{video.title}}</h1>
             <h3>{{video.author}}</h3>
             <pre>{{video.desc}}</pre>
-            <input type="text" value="{{video.filename}}" name="title" pattern="^[A-Za-z0-9_()]+$" required>
+            <input type="hidden" value="{{video.filename}}" name="title" pattern="^[A-Za-z0-9_()]+$" required>
             <label for="resolution">Choose Resolution:</label>
-            <select id="resolution" name="resolution" required>
+            <select class="youtube_add_form_element" id="resolution" name="resolution" required>
                 {% for res in video.resolutions %}
                 <option value="{{res}}">{{res}}p</option>
                 {% endfor %}
             </select>
-            <input type="hidden" name="url" value="{{video.url}}">
-            <input type="hidden" name="geturl" value="notgeturl">
-            <input name="submit" type="submit">
+            <input type="hidden" name="url" value="{{video.url}}" required>
+            <input type="hidden" name="geturl" value="notgeturl" required>
+            <input id="submit_button" class="youtube_add_form_element" name="submit" type="submit">
         </form>
         {% endif %}
 {% endblock %}

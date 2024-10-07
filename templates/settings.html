@@ -4,7 +4,7 @@
 <ul>
 {% for video in videos %}
 <div class="settings_video">
-    <h2>{{video.title}}</h2>
+    <h2 onclick="location.href = '/watch/{{video.id}}'">{{video.title}}</h2>
     <a class="delete_button_settings" href="/delete-video/{{video.id}}"><img src="/static/img/delete.png" alt="X"></a>
 </div>
 {% endfor %}

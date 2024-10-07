@@ -1,13 +1,14 @@
-from pytubefix import YouTube
-import re
 from moviepy.editor import VideoFileClip, AudioFileClip
+from pytubefix import YouTube
+import subprocess
+import re
+import os
 
 def clean_title_for_filename(title):
     cleaned_filename = re.sub(r'[^A-Za-z0-9_() ]', '', title)
     cleaned_name = re.sub(r'_+', '_', cleaned_filename.replace(" ", "_"))
     return cleaned_name.strip('_')
     
-
 class YouTubeDownloader:
     def __init__(self, url):
         self.url = url
@@ -22,7 +23,6 @@ class YouTubeDownloader:
         total_size = stream.filesize
         bytes_downloaded = total_size - bytes_remaining
         percentage_of_completion = bytes_downloaded / total_size * 100
-        print(f"Downloaded: {percentage_of_completion:.2f}%")
         self.progress = percentage_of_completion
     
     def get_info(self,):
@@ -48,6 +48,7 @@ class YouTubeDownloader:
         }
 
     def download(self, filename, quality='1080p'): 
+        video_output_path = f"static/content/{filename}"
         video_stream = None
         audio_stream = None
         video_stream = self.yt.streams.filter(file_extension='mp4', res=quality).first()
@@ -55,7 +56,10 @@ class YouTubeDownloader:
         if video_stream and audio_stream:
             video_file = video_stream.download(output_path="static/cache/", filename=filename)
             audio_file = audio_stream.download(output_path="static/cache/", filename=f"{filename}.mp3")
-            video_clip = VideoFileClip(video_file)
-            audio_clip = AudioFileClip(audio_file)
-            combined = video_clip.set_audio(audio_clip)
-            combined.write_videofile(f"static/content/{filename}", audio_codec='aac', threads=4, audio_fps=44100)
+            command = [
+                'ffmpeg', '-i', video_file, '-i', audio_file, 
+                '-c:v', 'copy', '-c:a', 'aac', '-strict', 'experimental', video_output_path
+            ]
+            subprocess.run(command)
+            os.file.remove(f"static/cache/{filename}")
+            os.file.remove(f"static/cache/{filename}.mp3")

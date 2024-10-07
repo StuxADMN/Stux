@@ -51,7 +51,7 @@ class YouTubeDownloader:
         video_stream = None
         audio_stream = None
         video_stream = self.yt.streams.filter(file_extension='mp4', res=quality).first()
-        audio_stream = self.yt.streams.filter(only_audio=True).first()
+        audio_stream = self.yt.streams.filter(only_audio=True).order_by('abr').desc().first()
         if video_stream and audio_stream:
             video_file = video_stream.download(output_path="static/cache/", filename=filename)
             audio_file = audio_stream.download(output_path="static/cache/", filename=f"{filename}.mp3")

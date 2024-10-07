@@ -28,10 +28,12 @@ def add_video():
         def download_thread(url, resolution, filename):
             yt = YouTubeDownloader(url)
             db = database()
-            db.add_video(title=yt.title, author=yt.author, length=yt.length, description=yt.desc, video_path=filename)
             download_instances.append(yt)
-            yt.download(quality=resolution, filename=filename)
-            download_instances.remove(yt)
+            try:
+                yt.download(quality=resolution, filename=filename)
+                db.add_video(title=yt.title, author=yt.author, length=yt.length, description=yt.desc, video_path=filename)
+            except Exception as e: print(e)
+            finally: download_instances.remove(yt)
 
         url_to_download = request.form.get("url")
         resolution_to_download = f"{request.form.get("resolution")}p"
@@ -101,6 +103,10 @@ def video_stream(videofile):
 def settings():
     if request.method == "POST":
         print(request.form)
+    
+    
+    
+    return render_template("settings.html", settings=settings)
 
 if __name__=="__main__":
     db = database()

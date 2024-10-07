@@ -49,7 +49,7 @@ class database():
                     "desc": video[2],
                     "path": video[3],
                     "author": video[4],
-                    "length": video[5]
+                    "length": f"{video[5] // 60:02}:{video[5] % 60:02}",
                 }
             )
         
@@ -79,7 +79,7 @@ class database():
             "desc": video[2],
             "path": video[3],
             "author": video[4],
-            "length": video[5],
+            "length": f"{video[5] // 60:02}:{video[5] % 60:02}",
         }
         
         return video_info

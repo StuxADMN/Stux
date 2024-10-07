@@ -61,5 +61,5 @@ class YouTubeDownloader:
                 '-c:v', 'copy', '-c:a', 'aac', '-strict', 'experimental', video_output_path
             ]
             subprocess.run(command)
-            os.file.remove(f"static/cache/{filename}")
-            os.file.remove(f"static/cache/{filename}.mp3")
+            os.remove(f"static/cache/{filename}")
+            os.remove(f"static/cache/{filename}.mp3")

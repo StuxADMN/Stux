@@ -1,5 +1,4 @@
 import sqlite3
-import bcrypt
 
 # database class for module
 class database():

@@ -97,6 +97,11 @@ def video_stream(videofile):
     
     return response
 
+@app.route("/settings", methods=["POST", "GET"])
+def settings():
+    if request.method == "POST":
+        print(request.form)
+
 if __name__=="__main__":
     db = database()
     db.init_db()

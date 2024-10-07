@@ -44,6 +44,14 @@ def add_video():
     
     return render_template("add_video.html", get_url=True)
 
+@app.route("/delete-video/<id>")
+def delete_video(id):
+    db = database()
+    video = db.get_video(id)
+    db.remove_video(id)
+    os.remove(f"static/content/{video["path"]}")
+    return redirect("/settings")
+
 @app.route("/search/<term>")
 def search(term):
     videos = db.get_search(term)
@@ -101,12 +109,11 @@ def video_stream(videofile):
 
 @app.route("/settings", methods=["POST", "GET"])
 def settings():
-    if request.method == "POST":
-        print(request.form)
+    db=database()
+    videos = db.get_videos()
     
     
-    
-    return render_template("settings.html", settings=settings)
+    return render_template("settings.html", videos=videos)
 
 if __name__=="__main__":
     db = database()

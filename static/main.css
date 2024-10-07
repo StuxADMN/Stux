@@ -1,17 +1,23 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 
 * {
+    
     font-family: 'Poppins', sans-serif;
     user-select: none;
     text-decoration: none;
     outline: none;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
+
+
 
 body {
     height: 100vh;
     background-color: black;
     margin: 0;
     padding: 0;
+
 }
 
 header {
@@ -23,10 +29,26 @@ header {
     display: flex;
 }
 
+.settings_video {
+    margin: 10px;
+    background-color: #252525;
+    display: flex;
+    border-radius: 10px;
+    width: 80vw;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.settings_video h2 {
+    overflow: hidden;
+}
+
 main {
     padding: 10px;
     padding-left: 20px;
 }
+
 
 .stux_logo {
     padding: 0;
@@ -66,6 +88,11 @@ p {
 #submit_button {
     cursor: pointer;
     color: white;
+    transition: all 0.3s;
+}
+
+#submit_button:hover {
+    background-color: #333333
 }
 
 .youtube_add_form_element {
@@ -78,6 +105,40 @@ p {
     border-style: none;
     width: 300px;
     margin: auto;
+    padding: 10px;
+    border-radius: 10px;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.feed_video {
+    background-color: #252525;
+    margin: 10px;
+    border-radius: 10px;
+    padding-left: 10px;
+    transition: all 0.3s;
+}
+
+.feed_video:hover {
+    background-color: #333333;
+}
+
+.delete_button_settings {
+    background-color: #303030;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+
+.delete_button_settings img {
+    height: 50px;
+
+
+}
+
+.delete_button_settings:hover {
+    background-color: #404040;
+
 }

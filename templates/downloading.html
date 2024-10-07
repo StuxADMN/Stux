@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>DOWNLOADING</h2>
+    {% if downloads %}
     {% for download in downloads %}
     <div>
         <p>{{download.title}}</p>
@@ -10,4 +10,7 @@
         <p>{{download.url}}</p>
     </div>
     {% endfor %}
+    {% else %}
+    <h2>Oh, there seems to be not a single download :D</h2>
+    {% endif %}
 {% endblock %}

@@ -4,6 +4,7 @@
     font-family: 'Poppins', sans-serif;
     user-select: none;
     text-decoration: none;
+    outline: none;
 }
 
 body {
@@ -20,6 +21,11 @@ header {
     justify-content: space-between;
     align-items: center;
     display: flex;
+}
+
+main {
+    padding: 10px;
+    padding-left: 20px;
 }
 
 .stux_logo {
@@ -50,4 +56,28 @@ p {
 
 .site_icons {
     height: 50px;
+}
+
+.add_youtube_form {
+
+    padding: 10px;
+}
+
+#submit_button {
+    cursor: pointer;
+    color: white;
+}
+
+.youtube_add_form_element {
+    color: #CCCCCC;
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    box-sizing: border-box;
+    background-color: #252525;
+    border-style: none;
+    width: 300px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

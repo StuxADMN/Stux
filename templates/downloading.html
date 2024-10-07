@@ -13,4 +13,9 @@
     {% else %}
     <h2>Oh, there seems to be not a single download :D</h2>
     {% endif %}
+    <script>
+        setInterval(function() {
+            window.location.reload();
+        }, 3000);
+    </script>
 {% endblock %}

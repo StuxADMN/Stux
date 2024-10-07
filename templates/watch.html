@@ -12,10 +12,14 @@
         <img class="stux_logo" src="/static/img/stux_logo.png" alt="Stux">
     </header>
     <main>
+        <div>
         <video width="640" height="360" controls>
-            <source src="/stream-video/{{filename}}" type="video/mp4">
+            <source src="/stream-video/{{video.path}}" type="video/mp4">
             Your browser does not support the video tag.
         </video>
+        <h1>{{video.title}}</h1>
+        <h2>{{video.author}}</h2>
+        </div>
     </main>
 
 

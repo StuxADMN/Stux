@@ -24,7 +24,7 @@
             <h1>{{video.title}}</h1>
             <h3>{{video.author}}</h3>
             <pre>{{video.desc}}</pre>
-            <input type="text" value="{{video.filename}}" pattern="^[A-Za-z0-9_()]+$" required>
+            <input type="text" value="{{video.filename}}" name="title" pattern="^[A-Za-z0-9_()]+$" required>
             <label for="resolution">Choose Resolution:</label>
             <select id="resolution" name="resolution" required>
                 {% for res in video.resolutions %}

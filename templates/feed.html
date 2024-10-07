@@ -13,7 +13,13 @@
         <img class="stux_logo" src="/static/img/stux_logo.png" alt="Stux">
     </header>
     <main>
-        
+        {% for video in content %}
+        <div>
+            <h1>{{video.title}} ID:{{video.id}}</h1>
+            <h2>{{video.author}}</h2>
+            <p>{{video.length}}</p>
+        </div>
+        {% endfor %}
     </main>
 
 </body>

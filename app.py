@@ -13,6 +13,7 @@ app.secret_key = 'supersecretkey&RF/GDVB+Q"789630hnRT*Q()/RNF&W'
 
 @app.route("/")
 def feed():
+    db = database()
     videos = db.get_videos()
     
     return render_template("feed.html", content=videos)
@@ -27,7 +28,7 @@ def add_video():
         def download_thread(url, resolution, filename):
             yt = YouTubeDownloader(url)
             db = database()
-            db.add_video(title=yt.title, author=yt.author, length=yt.length, description=yt.desc, video_path=f"static/content/{filename}")
+            db.add_video(title=yt.title, author=yt.author, length=yt.length, description=yt.desc, video_path=filename)
             download_instances.append(yt)
             yt.download(quality=resolution, filename=filename)
             download_instances.remove(yt)
@@ -35,8 +36,8 @@ def add_video():
         url_to_download = request.form.get("url")
         resolution_to_download = f"{request.form.get("resolution")}p"
         filename = request.form.get("title") + ".mp4"
-        download_thread = threading.Thread(target=download_thread, args=(url_to_download, resolution_to_download, filename))
-        download_thread.start()
+        threading.Thread(target=download_thread, args=(url_to_download, resolution_to_download, filename)).start()
+
         return redirect("/downloads")
     
     return render_template("add_video.html", get_url=True)
@@ -44,6 +45,7 @@ def add_video():
 @app.route("/search/<term>")
 def search(term):
     videos = db.get_search(term)
+    return redirect("/")
 
 @app.route("/downloads", methods=["GET"])
 def downloads():
@@ -62,9 +64,9 @@ def downloads():
 @app.route("/watch/<id>")
 def watch(id):
     db = database()
-    #video = db.get_video(id)
-    video = " "
-    return render_template("watch.html", video=video, filename="wohnmobil.mp4")
+    video = db.get_video(id)
+    
+    return render_template("watch.html", video=video)
 
 def get_video_range(file_path, start, length):
     with open(file_path, 'rb') as video:
@@ -98,5 +100,4 @@ def video_stream(videofile):
 if __name__=="__main__":
     db = database()
     db.init_db()
-
     app.run(host="0.0.0.0", port=80, debug=True)

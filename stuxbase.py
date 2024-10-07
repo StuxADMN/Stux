@@ -14,15 +14,15 @@ class database():
                 description TEXT,
                 video_path TEXT NOT NULL,
                 author TEXT NOT NULL,
-                length INTEGER NOT NULL,
+                length INTEGER NOT NULL
             );
         ''')
         self.connection.commit()
 
     def add_video(self, title, description, video_path, author, length):
         insert_query = '''
-        INSERT INTO videos (title, description, , video_path, author, length)
-        VALUES (?, ?, ?, ?, ?, ?);
+        INSERT INTO videos (title, description, video_path, author, length)
+        VALUES (?, ?, ?, ?, ?);
         '''
         self.cursor.execute(insert_query, (title, description, video_path, author, length))
         self.connection.commit()
@@ -35,11 +35,26 @@ class database():
         self.connection.commit()
 
     def get_videos(self,):
+        videos_info = []
         select_query = '''
             SELECT * FROM videos
         '''
         self.cursor.execute(select_query)
-        return self.cursor.fetchall()
+        videos = self.cursor.fetchall()
+        for video in videos:
+            videos_info.append(
+                {
+                    "id": video[0],
+                    "title": video[1],
+                    "desc": video[2],
+                    "path": video[3],
+                    "author": video[4],
+                    "length": video[5]
+                }
+            )
+        
+        
+        return videos_info
 
     def get_search(self, term):
         select_query = '''
@@ -56,7 +71,7 @@ class database():
         select_query = '''
             SELECT * FROM videos WHERE id = ?;
         '''
-        self.cursor.execute(select_query, (id,))[0]
+        self.cursor.execute(select_query, (id,))
         video = self.cursor.fetchall()[0]
         video_info = {
             "id": video[0],

@@ -15,7 +15,6 @@ class database():
                 video_path TEXT NOT NULL,
                 author TEXT NOT NULL,
                 length INTEGER NOT NULL,
-                upload_date TEXT DEFAULT CURRENT_TIMESTAMP
             );
         ''')
         self.connection.commit()
@@ -57,5 +56,15 @@ class database():
         select_query = '''
             SELECT * FROM videos WHERE id = ?;
         '''
-        self.cursor.execute(select_query, (id,))
-        return self.cursor.fetchall()[0]
+        self.cursor.execute(select_query, (id,))[0]
+        video = self.cursor.fetchall()[0]
+        video_info = {
+            "id": video[0],
+            "title": video[1],
+            "desc": video[2],
+            "path": video[3],
+            "author": video[4],
+            "length": video[5],
+        }
+        
+        return video_info

@@ -2,10 +2,12 @@
 
 {% block content %}
         {% for video in content %}
+        <div class="feed_video">
         <a href="/watch/{{video.id}}">
             <h1>{{video.title}}</h1>
             <h2>{{video.author}}</h2>
             <p>{{video.length}}</p>
         </a>
+        </div>
         {% endfor %}
 {% endblock %}

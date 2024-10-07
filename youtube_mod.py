@@ -58,4 +58,4 @@ class YouTubeDownloader:
             video_clip = VideoFileClip(video_file)
             audio_clip = AudioFileClip(audio_file)
             combined = video_clip.set_audio(audio_clip)
-            combined.write_videofile(f"static/content/{filename}")
+            combined.write_videofile(f"static/content/{filename}", audio_codec='aac', threads=4, audio_fps=44100)

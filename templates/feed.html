@@ -1,26 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="/static/main.css">
-    <link rel="icon" href="/static/img/s.png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stux</title>
-</head>
-<body>
-    
-    <header>
-        <img class="stux_logo" src="/static/img/stux_logo.png" alt="Stux">
-    </header>
-    <main>
+{% extends "base.html" %}
+
+{% block content %}
         {% for video in content %}
-        <div>
-            <h1>{{video.title}} ID:{{video.id}}</h1>
+        <a href="/watch/{{video.id}}">
+            <h1>{{video.title}}</h1>
             <h2>{{video.author}}</h2>
             <p>{{video.length}}</p>
-        </div>
+        </a>
         {% endfor %}
-    </main>
-
-</body>
-</html>
+{% endblock %}
